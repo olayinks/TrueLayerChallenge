@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrueLayerChallenge.Core.Interfaces;
+using TrueLayerChallenge.Core.Services;
 
 namespace TrueLayerChallenge
 {
@@ -25,6 +27,7 @@ namespace TrueLayerChallenge
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddHttpClient<IResponse, Response>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
