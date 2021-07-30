@@ -44,5 +44,31 @@ namespace TrueLayerChallenge.Controllers
             }
 
         }
+
+        [HttpGet]
+        [Route("[action]/{name}")]
+        public async Task<IActionResult> Translated(string name)
+        {
+
+            try
+            {
+
+                if (String.IsNullOrEmpty(name))
+                    return NotFound();
+                var pokemon = await _response.Translated(name);
+                if (pokemon != null)
+                {
+                    return Ok(pokemon);
+                }
+                else
+                    return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
+        }
     }
 }
