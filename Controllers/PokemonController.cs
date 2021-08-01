@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrueLayerChallenge.Core.Interfaces;
+using TrueLayerChallenge.Helper;
 
 namespace TrueLayerChallenge.Controllers
 {
@@ -15,10 +17,12 @@ namespace TrueLayerChallenge.Controllers
     {
         private readonly ILogger<PokemonController> _logger;
         private readonly IResponse _response;
-        public PokemonController(ILogger<PokemonController> logger, IResponse response)
+        private readonly IConfiguration _config;
+        public PokemonController(ILogger<PokemonController> logger, IResponse response,IConfiguration config)
         {
             _logger = logger;
             _response = response;
+            _config = config;
         }
         // GET api/<PokemonController>/mewtwo
         [HttpGet("{name}")]
@@ -29,7 +33,7 @@ namespace TrueLayerChallenge.Controllers
                 if (String.IsNullOrEmpty(name))
                     return NotFound();
 
-                var pokemon = await _response.Basic(name);
+                var pokemon = await _response.FetchPokemon($"{_config["PokemonURL"]}{name}");
                 if (pokemon != null)
                 {
                     return Ok(pokemon);
@@ -55,13 +59,18 @@ namespace TrueLayerChallenge.Controllers
 
                 if (String.IsNullOrEmpty(name))
                     return NotFound();
-                var pokemon = await _response.Translated(name);
-                if (pokemon != null)
+                var pokemon = await _response.FetchPokemon($"{_config["PokemonURL"]}{name}");
+                var language = pokemon.IsLegendary || pokemon.Habitat == "cave" ? Utils.YODA : Utils.SHAKESPEARE;                
+
+                var pokemonTranslated = await _response.Translation($"{_config["translationURL"]}{language}",pokemon.Description);
+                
+                if (!string.IsNullOrEmpty(pokemonTranslated))
                 {
+                    pokemon.Description = pokemonTranslated;
                     return Ok(pokemon);
                 }
                 else
-                    return NotFound();
+                     return Ok(pokemon);
             }
             catch (Exception e)
             {

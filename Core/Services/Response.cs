@@ -15,17 +15,13 @@ namespace TrueLayerChallenge.Core.Services
     public class Response : IResponse
     {
         private readonly HttpClient _client;
-        private readonly IConfiguration _config;
-        public Response(HttpClient client, IConfiguration config)
+        public Response(HttpClient client)
         {
             _client = client;
-            _config = config;
         }
-        public async Task<Pokemon> Basic(string name)
+        public async Task<Pokemon> FetchPokemon(string url)
         {
-
-
-            var response = await _client.GetAsync($"{_config["PokemonURL"]}{name}");
+            var response = await _client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
             var pokemonDto = JsonConvert.DeserializeObject<PokemonDTO>(responseString);
@@ -42,28 +38,22 @@ namespace TrueLayerChallenge.Core.Services
 
         }
 
-        public async Task<Pokemon> Translated(string name)
-        {
-            var pokemon = await Basic(name);
-
-            if (pokemon != null)
-            {
+        public async Task<string> Translation(string url,string description)
+        {                     
                 var data = new StringContent(JsonConvert
-                    .SerializeObject(new { text = pokemon.Description }), Encoding.UTF8, "application/json");
-                var language = pokemon.IsLegendary || pokemon.Habitat == "cave" ? Utils.YODA : Utils.SHAKESPEARE;
-                var response = await _client.PostAsync($"{_config["translationURL"]}{language}", data);
+                    .SerializeObject(new { text = description }), Encoding.UTF8, "application/json");
+         
+                var response = await _client.PostAsync(url, data);
                 if (response.IsSuccessStatusCode)
                 {
                     var responseString = await response.Content.ReadAsStringAsync();
                     string translation = JsonConvert.DeserializeObject<dynamic>(responseString).contents.translated;
-                    pokemon.Description = Utils.RemoveTabs(translation);
-                    return pokemon;
+                    return  Utils.RemoveTabs(translation);
+           
 
                 }
-                return pokemon;
-
-            }
-            return null;
+                return "";
+            
         }
     }
 }
