@@ -9,6 +9,6 @@ namespace TrueLayerChallenge.Core.Interfaces
     public interface IResponse
     {
         public Task<Pokemon> FetchPokemon(string url);
-        public Task<string> Translation(string url,string description);
+        public Task<Pokemon> Translation(string url,Pokemon pokemon);
     }
 }

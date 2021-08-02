@@ -38,22 +38,29 @@ namespace TrueLayerChallenge.Core.Services
 
         }
 
-        public async Task<string> Translation(string url,string description)
-        {                     
-                var data = new StringContent(JsonConvert
-                    .SerializeObject(new { text = description }), Encoding.UTF8, "application/json");
-         
-                var response = await _client.PostAsync(url, data);
-                if (response.IsSuccessStatusCode)
-                {
-                    var responseString = await response.Content.ReadAsStringAsync();
-                    string translation = JsonConvert.DeserializeObject<dynamic>(responseString).contents.translated;
-                    return  Utils.RemoveTabs(translation);
-           
+        public async Task<Pokemon> Translation(string url, Pokemon pokemon)
+        {
 
+            var language = pokemon.IsLegendary || pokemon.Habitat == Utils.CAVE ? Utils.YODA : Utils.SHAKESPEARE;
+            var data = new StringContent(JsonConvert
+                    .SerializeObject(new { text = pokemon.Description }), Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync($"{url}{language}", data);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                string translation = JsonConvert.DeserializeObject<dynamic>(responseString).contents.translated;
+                translation = Utils.RemoveTabs(translation);
+                if (!string.IsNullOrEmpty(translation))
+                {
+                    pokemon.Description = translation;
+                    return pokemon;
                 }
-                return "";
-            
+
+            }
+            pokemon.Description = "";
+            return pokemon;
+
         }
     }
 }
