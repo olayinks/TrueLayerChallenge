@@ -8,7 +8,7 @@ Running the project from Visual studion on IIS EXPRESS
 4. to run the translation endpoint, use http://localhost:[PORT]/api/Pokemon/translation/mewtwo 
 
 Running the project from docker hub
-pull the image from <a href="https://hub.docker.com/r/olayinks/truelayerrepo1/tags?page=1&ordering=last_updated"/> docker hub
+pull the image from <a href="https://hub.docker.com/r/olayinks/truelayerrepo1/tags?page=1&ordering=last_updated"> docker hub </a>
 
 Production API consideration
 1. The translation API is on a rate limiter of 5 calls within an hour for the free version,
