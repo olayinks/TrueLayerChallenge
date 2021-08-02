@@ -60,7 +60,7 @@ namespace TrueLayerChallenge.Controllers
                 if (String.IsNullOrEmpty(name))
                     return NotFound();
                 var pokemon = await _response.FetchPokemon($"{_config["PokemonURL"]}{name}");
-                var language = pokemon.IsLegendary || pokemon.Habitat == "cave" ? Utils.YODA : Utils.SHAKESPEARE;                
+                var language = pokemon.IsLegendary || pokemon.Habitat == Utils.CAVE ? Utils.YODA : Utils.SHAKESPEARE;                
 
                 var pokemonTranslated = await _response.Translation($"{_config["translationURL"]}{language}",pokemon.Description);
                 

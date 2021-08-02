@@ -9,6 +9,7 @@ namespace TrueLayerChallenge.Helper
     {
         public const string SHAKESPEARE = "shakespeare";
         public const string YODA = "yoda";
+        public const string CAVE = "cave";
 
         public static string RemoveTabs(string text)
         {
