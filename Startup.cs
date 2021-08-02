@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,12 @@ namespace TrueLayerChallenge
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimitPolicy"));
+            services.AddInMemoryRateLimiting();
+
             services.AddControllers();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
             services.AddHttpClient<IResponse, Response>();
         }
 
@@ -41,6 +47,7 @@ namespace TrueLayerChallenge
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseIpRateLimiting();
 
             app.UseEndpoints(endpoints =>
             {
