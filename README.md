@@ -22,6 +22,8 @@ The project was built with  .net core 3.1 LTS and Visual Studio Enterprise 2019
 <ul>
 <li> The translation API is on a rate limiter of 5 calls within an hour for the free version,
 The production API would subscribe to a paid service</li>
+  <li>The Rate limiter implemented uses a basic in-memory store to keep records of the Ip addresses.For a production system, 
+    a global cache implemented on a scalable in-memory store like redis would be used so the API can scale easily</li>
 <li> The API should be protected behind some form of authentication and authorization service that provides OAuth2 or OpenId standards</li>
 <li> Currently, the choice of the language to translate is random from the list of English language description, a more definative approach should be taken as to return
 an expected feedback to the client</li>
