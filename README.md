@@ -3,12 +3,14 @@
 A true layer job challenge
 The project was built with Dot net core 3.1 LTS and visual studio Enterprise 2019
 <h3>Running the project from Visual studion on IIS EXPRESS </h3>
-1. Debug the the application (Press F5) 
-2. The application defaults to http://localhost:[PORT]/api/Pokemon/mewtwo 
-3. You can change the name of the specie (mewtwo) to any of the species available at the pokemon api
-4. to run the translation endpoint, use http://localhost:[PORT]/api/Pokemon/translation/mewtwo 
-5. get the test project from <a href="https://github.com/olayinks/TrueLayerChallenge.Test">here</a>
-6. The Translation endpoint has a rate limiter of 5 calls per hour, due to the fun translation endpoint's limitation for free license use 
+<ul>
+  <li>1. Debug the the application (Press F5) </li>
+<li>2. The application defaults to http://localhost:[PORT]/api/Pokemon/mewtwo </li>
+<li>3. You can change the name of the specie (mewtwo) to any of the species available at the pokemon api</li>
+<li>4. to run the translation endpoint, use http://localhost:[PORT]/api/Pokemon/translation/mewtwo </li>
+<li>5. get the test project from <a href="https://github.com/olayinks/TrueLayerChallenge.Test">here</a></li>
+<li>6. The Translation endpoint has a rate limiter of 5 calls per hour, due to the fun translation endpoint's limitation for free license use </li>
+  </ul>
 
 <h3>Running the project from Docker hub </h3>
 1. pull the image from <a href="https://hub.docker.com/r/olayinks/truelayerrepo/tags?page=1&ordering=last_updated"> docker hub </a>
